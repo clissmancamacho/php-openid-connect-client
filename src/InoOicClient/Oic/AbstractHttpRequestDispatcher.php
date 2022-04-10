@@ -70,10 +70,10 @@ abstract class AbstractHttpRequestDispatcher
      */
     public function setOptions($options)
     {
-        if (! is_array($options) && ! $options instanceof \Traversable) {
+        if (!is_array($options) && !$options instanceof \Traversable) {
             throw new \InvalidArgumentException('The options must be array or Traversable');
         }
-        
+        $options = collect($options);
         $options = ArrayUtils::iteratorToArray($options);
         $this->options = new Parameters($options);
     }
@@ -113,7 +113,7 @@ abstract class AbstractHttpRequestDispatcher
      */
     public function getJsonCoder()
     {
-        if (! $this->jsonCoder instanceof Coder) {
+        if (!$this->jsonCoder instanceof Coder) {
             $this->jsonCoder = new Coder();
         }
         return $this->jsonCoder;
@@ -139,14 +139,15 @@ abstract class AbstractHttpRequestDispatcher
     public function sendHttpRequest(Http\Request $httpRequest)
     {
         $this->setLastHttpRequest($httpRequest);
-        
+
         try {
             $httpResponse = $this->httpClient->send($httpRequest);
         } catch (\Exception $e) {
             throw new HttpClientException(
-                sprintf("Exception during HTTP request: [%s] %s", get_class($e), $e->getMessage()));
+                sprintf("Exception during HTTP request: [%s] %s", get_class($e), $e->getMessage())
+            );
         }
-        
+
         $this->setLastHttpResponse($httpResponse);
         return $httpResponse;
     }

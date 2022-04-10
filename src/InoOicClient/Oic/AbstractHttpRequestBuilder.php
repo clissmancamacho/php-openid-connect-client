@@ -37,10 +37,10 @@ abstract class AbstractHttpRequestBuilder
      */
     public function setOptions($options)
     {
-        if (! is_array($options) && ! $options instanceof \Traversable) {
+        if (!is_array($options) && !$options instanceof \Traversable) {
             throw new \InvalidArgumentException('The options must be array or Traversable');
         }
-        
+        $options = collect($options);
         $options = ArrayUtils::iteratorToArray($options);
         $this->options = new Parameters($options);
     }

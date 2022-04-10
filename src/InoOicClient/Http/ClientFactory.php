@@ -18,7 +18,7 @@ class ClientFactory implements ClientFactoryInterface
      */
     protected $defaultOptions = array(
         'adapter' => 'Zend\Http\Client\Adapter\Curl',
-        
+
         'useragent' => 'PHP OpenID Connect Client (https://github.com/ivan-novakov/php-openid-connect-client)',
         'maxredirects' => 2,
         'strictredirects' => true,
@@ -60,6 +60,7 @@ class ClientFactory implements ClientFactoryInterface
      */
     public function mergeOptions($options)
     {
+        $options = collect($options);
         return ArrayUtils::merge($this->defaultOptions, ArrayUtils::iteratorToArray($options));
     }
 
